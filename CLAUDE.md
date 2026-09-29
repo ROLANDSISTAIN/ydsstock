@@ -17,6 +17,8 @@
 ## Façon de travailler
 
 - Le cœur métier (`src/domain/`) reste pur : pas de React, pas d'accès aux données. Toute règle ou tout calcul nouveau y arrive avec ses tests.
-- Les écrans ne parlent au stockage qu'à travers les interfaces de `src/data/repository.ts`.
+- Les écrans lisent la base via `useStore()` et les calculs de `src/data/queries.ts`, et ne la modifient qu'avec `run(commande)` : une commande de `src/data/commands.ts`, exécutée en tout ou rien (`transaction.ts`), avec son entrée au journal.
+- Toute nouvelle commande arrive avec un test dans `src/data/commands.test.ts`. Les données de démo (`seed.ts`) sont créées en rejouant les commandes, jamais écrites à la main.
+- Le stockage (`persistence.ts`, IndexedDB aujourd'hui) est le seul fichier à changer pour passer à SQLite et à la synchronisation.
 - Avant chaque commit : `npm test`, `npm run typecheck` et `npm run build` doivent passer.
 - Build en chemins relatifs (`base: './'`) et `HashRouter` : le même build doit marcher sur un site, dans Tauri et dans Capacitor.

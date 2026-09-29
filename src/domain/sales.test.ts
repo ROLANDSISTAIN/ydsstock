@@ -26,7 +26,11 @@ describe('documentTotals (ticket de la maquette, client pro à 5 %)', () => {
     5,
   );
   it('calcule sous-total, remise et total', () => {
-    expect(totals).toEqual({ subtotal: 254_800, discount: 12_740, total: 242_060 });
+    expect(totals).toEqual({ subtotal: 254_800, discount: 12_740, net: 242_060, vat: 0, total: 242_060 });
+  });
+  it('applique la TVA sur le montant remisé', () => {
+    const withVat = documentTotals([{ kind: 'unit', quantity: 1, unitPrice: 100_000 }], 5, 18);
+    expect(withVat).toEqual({ subtotal: 100_000, discount: 5_000, net: 95_000, vat: 17_100, total: 112_100 });
   });
 });
 

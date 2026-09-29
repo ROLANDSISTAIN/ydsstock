@@ -32,14 +32,28 @@ export function lineAmount(line: SaleLine): Fcfa {
 export interface DocumentTotals {
   subtotal: Fcfa;
   discount: Fcfa;
+  /** Montant après remise, hors taxe. */
+  net: Fcfa;
+  vat: Fcfa;
+  /** Montant à payer (TTC). */
   total: Fcfa;
 }
 
-/** Totaux d'un document avec remise client en pourcentage (0 pour un client comptoir). */
-export function documentTotals(lines: SaleLine[], discountPct = 0): DocumentTotals {
-  const subtotal = lines.reduce((sum, line) => sum + lineAmount(line), 0);
+/**
+ * Totaux d'un document : remise client en % (0 pour un client comptoir),
+ * puis TVA en % sur le montant remisé (0 tant que le client n'applique pas la TVA).
+ */
+export function documentTotals(lines: SaleLine[], discountPct = 0, vatPct = 0): DocumentTotals {
+  return totalsFromAmounts(lines.map(lineAmount), discountPct, vatPct);
+}
+
+/** Même calcul à partir de montants de lignes déjà arrondis. */
+export function totalsFromAmounts(amounts: Fcfa[], discountPct = 0, vatPct = 0): DocumentTotals {
+  const subtotal = amounts.reduce((sum, a) => sum + a, 0);
   const discount = discountAmount(subtotal, discountPct);
-  return { subtotal, discount, total: subtotal - discount };
+  const net = subtotal - discount;
+  const vat = discountAmount(net, vatPct);
+  return { subtotal, discount, net, vat, total: net + vat };
 }
 
 /**
