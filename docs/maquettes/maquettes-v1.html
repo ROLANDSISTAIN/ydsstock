@@ -1,0 +1,455 @@
+<title>Maquettes YDSstock</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout : rail de navigation à gauche (barre d'onglets en bas sur téléphone), écran de travail à droite. Acier galvanisé + bleu gentiane (RAL 5010) en accent. */
+:root{
+  --bg:#eef1f4; --surface:#ffffff; --sunken:#e3e8ed; --line:#d3dae1;
+  --fg:#17212b; --muted:#5b6978; --faint:#8a96a3;
+  --accent:#0e4c92; --accent-ink:#ffffff; --accent-soft:#dde8f5;
+  --good:#1f7a4d; --good-soft:#dcefe4; --warn:#a15c00; --warn-soft:#f7ead3; --crit:#b3261e; --crit-soft:#f7dcda;
+  --rail:#1b2733; --rail-fg:#c9d3dd; --rail-active:#ffffff;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f151b; --surface:#17202a; --sunken:#1e2934; --line:#2b3845;
+  --fg:#e6ecf1; --muted:#9aa8b6; --faint:#6d7b89;
+  --accent:#6ea6ea; --accent-ink:#0b1a2b; --accent-soft:#1c3150;
+  --good:#5cc08d; --good-soft:#163427; --warn:#e2a24a; --warn-soft:#3a2a12; --crit:#f07a70; --crit-soft:#3d1b19;
+  --rail:#0a0f14; --rail-fg:#95a3b1; --rail-active:#ffffff; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f151b; --surface:#17202a; --sunken:#1e2934; --line:#2b3845;
+  --fg:#e6ecf1; --muted:#9aa8b6; --faint:#6d7b89;
+  --accent:#6ea6ea; --accent-ink:#0b1a2b; --accent-soft:#1c3150;
+  --good:#5cc08d; --good-soft:#163427; --warn:#e2a24a; --warn-soft:#3a2a12; --crit:#f07a70; --crit-soft:#3d1b19;
+  --rail:#0a0f14; --rail-fg:#95a3b1; --rail-active:#ffffff; color-scheme:dark}
+
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font:14px/1.5 var(--body);font-variant-numeric:tabular-nums}
+*{box-sizing:border-box}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.app{display:grid;grid-template-columns:220px minmax(0,1fr);min-height:100%}
+.rail{background:var(--rail);color:var(--rail-fg);padding:20px 12px;display:flex;flex-direction:column;gap:24px;position:sticky;top:0;height:100vh}
+.brand{font-family:var(--display);font-weight:700;font-size:26px;letter-spacing:.02em;color:var(--rail-active);padding-inline:10px;line-height:1}
+.brand small{display:block;font:500 11px/1.4 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--rail-fg);margin-top:6px}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav a{display:flex;align-items:center;gap:10px;padding:10px;border-radius:6px;color:var(--rail-fg);text-decoration:none;font-weight:500}
+.nav a svg{width:18px;height:18px;flex:none}
+.nav a:hover{background:rgba(255,255,255,.06)}
+.nav a[aria-current="page"]{background:rgba(255,255,255,.1);color:var(--rail-active)}
+.rail-foot{margin-top:auto;font-size:12px;padding-inline:10px;line-height:1.5}
+.rail-foot b{display:block;color:var(--rail-active);font-weight:600}
+
+main{min-width:0;padding-block:20px 40px;padding-inline:clamp(16px,3vw,32px)}
+.demo{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--muted);margin-bottom:14px}
+.demo span{background:var(--warn-soft);color:var(--warn);font-weight:600;padding:2px 8px;border-radius:99px;letter-spacing:.04em;text-transform:uppercase;font-size:11px}
+.head{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;justify-content:space-between;margin-bottom:20px}
+h1{font-family:var(--display);font-weight:600;font-size:34px;line-height:1.05;margin:0;letter-spacing:.01em;text-wrap:balance}
+.sub{color:var(--muted);margin:4px 0 0}
+h2{font-family:var(--display);font-weight:600;font-size:20px;letter-spacing:.02em;margin:0}
+.label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.mono{font-family:var(--mono);font-size:12.5px}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;min-width:0}
+.panel-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:12px}
+.grid{display:grid;gap:16px}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:16px}
+.kpi .v{font-family:var(--display);font-size:30px;font-weight:600;line-height:1.1;margin-top:4px}
+.kpi .v small{font:500 13px var(--body);color:var(--muted);margin-left:4px}
+.kpi .d{font-size:12.5px;color:var(--muted);margin-top:2px}
+.up{color:var(--good);font-weight:600}.down{color:var(--crit);font-weight:600}
+.cols{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:16px}
+
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:2px 9px;border-radius:99px;white-space:nowrap}
+.pill.good{background:var(--good-soft);color:var(--good)}.pill.warn{background:var(--warn-soft);color:var(--warn)}.pill.crit{background:var(--crit-soft);color:var(--crit)}.pill.info{background:var(--accent-soft);color:var(--accent)}.pill.mute{background:var(--sunken);color:var(--muted)}
+.alerts{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.alerts li{display:grid;grid-template-columns:4px minmax(0,1fr);gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.alerts li:first-child{border-top:0;padding-top:0}
+.alerts .sev{border-radius:2px}
+.sev.crit{background:var(--crit)}.sev.warn{background:var(--warn)}.sev.info{background:var(--accent)}
+.alerts b{font-weight:600}.alerts p{margin:2px 0 0;color:var(--muted);font-size:13px}
+
+.coil{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;padding:10px 0;border-top:1px solid var(--line)}
+.coil:first-of-type{border-top:0;padding-top:0}
+.bar{grid-column:1/-1;height:8px;background:var(--sunken);border-radius:4px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:4px}
+.bar i.low{background:var(--warn)}
+.coil .meta{font-size:12.5px;color:var(--muted)}
+
+table{border-collapse:collapse;width:100%}
+th{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:600;text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+.num{text-align:right;white-space:nowrap}
+.scroll{overflow-x:auto}
+tbody tr.click{cursor:pointer}
+tbody tr.click:hover{background:var(--sunken)}
+tbody tr.sel{background:var(--accent-soft)}
+
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:8px 14px;font-weight:500;cursor:pointer}
+.btn:hover{background:var(--sunken)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+
+/* Caisse */
+.pos{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(320px,1fr);gap:16px;align-items:start}
+.search{display:flex;gap:8px;margin-bottom:12px}
+.search input{flex:1;min-width:0;padding:9px 12px;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:4px 12px;font-size:13px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.catalog{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+.prod{text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:12px;cursor:pointer;display:flex;flex-direction:column;gap:6px;min-height:118px}
+.prod:hover{border-color:var(--accent)}
+.prod .swatch{width:22px;height:6px;border-radius:2px}
+.prod b{font-weight:600;line-height:1.3}
+.prod .p{margin-top:auto;font-family:var(--mono);font-size:12.5px}
+.prod .s{font-size:12px;color:var(--muted)}
+.ticket{position:sticky;top:16px}
+.line{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 10px;padding:10px 0;border-top:1px solid var(--line)}
+.line:first-child{border-top:0}
+.line .ctl{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:13px;color:var(--muted)}
+.line input{width:72px;padding:5px 8px;border:1px solid var(--line);border-radius:5px;background:var(--bg);text-align:right;font-family:var(--mono);font-size:13px}
+.x{border:0;background:none;color:var(--faint);cursor:pointer;font-size:18px;line-height:1;padding:2px 6px}
+.x:hover{color:var(--crit)}
+.tot{display:grid;grid-template-columns:1fr auto;gap:4px 12px;padding-top:12px;border-top:2px solid var(--fg);margin-top:4px}
+.tot .big{font-family:var(--display);font-size:30px;font-weight:700}
+.field{display:flex;flex-direction:column;gap:4px;margin:12px 0}
+.field select{padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+.pay{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:6px 0 14px}
+.pay button{border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:8px 4px;font-size:13px;cursor:pointer}
+.pay button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent);font-weight:600}
+.pay button[disabled]{opacity:.4;cursor:not-allowed}
+.empty{color:var(--muted);text-align:center;padding:30px 10px;font-size:13px}
+
+/* Bobines */
+.coils{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:16px;align-items:start}
+.dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 16px;margin:0}
+.dl div{min-width:0}.dl dt{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:600}.dl dd{margin:2px 0 0;font-weight:500}
+.gauge{margin:16px 0;display:flex;flex-direction:column;gap:6px}
+.gauge .track{height:14px;background:var(--sunken);border-radius:7px;overflow:hidden;display:flex}
+.gauge .used{background:var(--faint)}.gauge .left{background:var(--accent)}
+.gauge .legend{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);gap:8px;flex-wrap:wrap}
+.formula{background:var(--sunken);border-radius:6px;padding:10px 12px;font-family:var(--mono);font-size:12.5px;overflow-x:auto;white-space:nowrap}
+
+/* Production */
+.steps{display:flex;gap:0;margin:4px 0 18px;overflow-x:auto}
+.step{flex:1;min-width:110px;position:relative;padding-top:18px;font-size:12.5px;color:var(--muted)}
+.step::before{content:"";position:absolute;top:5px;left:0;right:0;height:3px;background:var(--line)}
+.step::after{content:"";position:absolute;top:0;left:0;width:13px;height:13px;border-radius:50%;background:var(--surface);border:3px solid var(--line)}
+.step.done::before,.step.done::after{background:var(--accent);border-color:var(--accent)}
+.step.now::after{border-color:var(--accent);background:var(--surface)}
+.step.now{color:var(--fg);font-weight:600}
+.step b{display:block;color:var(--fg);font-weight:600}
+.split{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:16px}
+.stat .v{font-family:var(--display);font-size:28px;font-weight:600;line-height:1.1}
+.stat .d{font-size:12.5px;color:var(--muted)}
+
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:8px;font-weight:500;box-shadow:0 6px 24px rgba(0,0,0,.2);z-index:10;max-width:calc(100% - 32px)}
+
+@media (max-width:1100px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.cols,.coils,.pos{grid-template-columns:minmax(0,1fr)}.ticket{position:static}}
+@media (max-width:760px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .rail{position:fixed;inset:auto 0 0 0;height:auto;flex-direction:row;padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));z-index:5;gap:0}
+  .brand,.rail-foot{display:none}
+  .nav{flex-direction:row;width:100%;justify-content:space-around}
+  .nav a{flex-direction:column;gap:2px;font-size:11px;padding:6px 4px;flex:1;text-align:center}
+  main{padding-block:16px 96px}
+  h1{font-size:28px}
+  .split{grid-template-columns:minmax(0,1fr)}
+  .dl{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:420px){.kpis{grid-template-columns:minmax(0,1fr)}}
+@media (prefers-reduced-motion:no-preference){.bar i,.gauge .left{transition:width .4s ease}}
+</style>
+
+<div class="app">
+  <aside class="rail">
+    <div class="brand">YDSstock<small>Aciéra Tôles SARL</small></div>
+    <nav class="nav" aria-label="Navigation principale">
+      <a href="#tableau" data-view="tableau"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>Tableau de bord</a>
+      <a href="#caisse" data-view="caisse"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="7" width="18" height="13" rx="1.5"/><path d="M7 7V4h10v3M7 12h4M7 16h10"/></svg>Caisse</a>
+      <a href="#bobines" data-view="bobines"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3"/></svg>Bobines</a>
+      <a href="#production" data-view="production"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 20h18M5 20V10l5 3V10l5 3V6h4v14"/></svg>Production</a>
+    </nav>
+    <div class="rail-foot"><b>Comptable</b>Mardi 29 septembre 2026</div>
+  </aside>
+  <main id="main"></main>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const fmt = n => new Intl.NumberFormat('fr-FR',{maximumFractionDigits:0}).format(Math.round(n));
+const fcfa = n => fmt(n) + ' FCFA';
+const dec = (n,d=1) => new Intl.NumberFormat('fr-FR',{minimumFractionDigits:d,maximumFractionDigits:d}).format(n);
+const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const DENS = 7.85; // kg par m² et par mm d'épaisseur (acier)
+const lengthOf = (kg, widthM, eMm) => kg / (DENS * widthM * eMm);
+
+/* ---------- Données fictives ---------- */
+const coils = [
+  {id:'B-2409-017', mat:'Galvanisé', e:0.35, w:1.22, color:'Brut', ral:'', supplier:'Sidérurgie du Golfe', recv:'12/09/2026', kg0:5000, kgLeft:2140, priceKg:685, loc:'Allée A · rack 2', status:'En cours', yieldPct:98.1},
+  {id:'B-2409-021', mat:'Prélaqué', e:0.35, w:1.22, color:'Bleu', ral:'RAL 5010', supplier:'ColorSteel Import', recv:'18/09/2026', kg0:4800, kgLeft:4800, priceKg:790, loc:'Allée A · rack 4', status:'En stock', yieldPct:null},
+  {id:'B-2408-009', mat:'Prélaqué', e:0.40, w:1.22, color:'Rouge brique', ral:'RAL 8004', supplier:'ColorSteel Import', recv:'27/08/2026', kg0:5200, kgLeft:410, priceKg:805, loc:'Allée B · rack 1', status:'En cours', yieldPct:96.4},
+  {id:'B-2409-004', mat:'Aluzinc', e:0.30, w:1.22, color:'Brut', ral:'', supplier:'Sidérurgie du Golfe', recv:'03/09/2026', kg0:4500, kgLeft:3120, priceKg:720, loc:'Allée B · rack 3', status:'En cours', yieldPct:97.8},
+  {id:'B-2407-030', mat:'Galvanisé', e:0.25, w:1.00, color:'Brut', ral:'', supplier:'Sidérurgie du Golfe', recv:'29/07/2026', kg0:3800, kgLeft:0, priceKg:660, loc:'—', status:'Terminée', yieldPct:95.2},
+];
+const coilUse = {
+  'B-2409-017':[
+    {d:'28/09/2026', of:'OF-2026-0142', kg:1190, m:348},
+    {d:'23/09/2026', of:'OF-2026-0137', kg:960, m:281},
+    {d:'16/09/2026', of:'OF-2026-0129', kg:710, m:207},
+  ]
+};
+const products = [
+  {id:'bac35b', name:'Bac acier 0,35 prélaqué bleu', fam:'Tôles', unit:'ml', price:4500, stock:'1 184 ml', sw:'#1f4e8c', cut:true},
+  {id:'bac35r', name:'Bac acier 0,40 rouge brique', fam:'Tôles', unit:'ml', price:5200, stock:'96 ml', sw:'#8c3b2a', cut:true},
+  {id:'ond30', name:'Tôle ondulée 0,30 galvanisée', fam:'Tôles', unit:'ml', price:3200, stock:'2 310 ml', sw:'#9aa5b0', cut:true},
+  {id:'tui40', name:'Tôle tuile 0,40 rouge grainée', fam:'Tôles', unit:'ml', price:5800, stock:'640 ml', sw:'#a3452f', cut:true},
+  {id:'fai', name:'Faîtière 0,35 bleu (2 m)', fam:'Accessoires', unit:'pièce', price:3500, stock:'148 pièces', sw:'#1f4e8c'},
+  {id:'rive', name:'Rive 0,35 bleu (2 m)', fam:'Accessoires', unit:'pièce', price:2800, stock:'92 pièces', sw:'#1f4e8c'},
+  {id:'clos', name:'Closoir mousse bac', fam:'Accessoires', unit:'pièce', price:450, stock:'1 200 pièces', sw:'#3d3d3d'},
+  {id:'pt', name:'Pointes à tôle galva 80 mm', fam:'Clous', unit:'kg', price:1400, stock:'860 kg', sw:'#7f8a95'},
+  {id:'pc', name:'Pointes tête plate 70 mm', fam:'Clous', unit:'kg', price:950, stock:'1 420 kg', sw:'#6b6b6b'},
+  {id:'vis', name:'Vis autoperceuses 6,3×25 (boîte 100)', fam:'Négoce', unit:'boîte', price:6500, stock:'57 boîtes', sw:'#b0892f'},
+  {id:'must', name:'Mastic d’étanchéité 310 ml', fam:'Négoce', unit:'pièce', price:2500, stock:'34 pièces', sw:'#d6d0c2'},
+  {id:'fil', name:'Fil recuit 1,4 mm', fam:'Clous', unit:'kg', price:1100, stock:'380 kg', sw:'#555'},
+];
+const clients = [
+  {id:'cpt', name:'Client comptoir', disc:0, credit:false},
+  {id:'bat', name:'Quincaillerie Le Bâtisseur', disc:5, credit:true, note:'Crédit : 1 250 000 / 3 000 000 FCFA'},
+  {id:'kod', name:'Ets Kodjo BTP', disc:8, credit:true, note:'Crédit : 2 940 000 / 3 000 000 FCFA'},
+];
+
+/* ---------- État de la caisse (lignes d'exemple) ---------- */
+let cart = [
+  {pid:'bac35b', qty:12, len:4.20},
+  {pid:'fai', qty:6},
+  {pid:'pt', qty:5},
+];
+let clientId = 'bat', payMode = 'Mobile money', famFilter = 'Tout', query = '';
+let invoiceNo = 1873;
+let selectedCoil = 'B-2409-017';
+
+/* ---------- Écrans ---------- */
+const views = {
+tableau(){
+  const days = [['Mer',2.21],['Jeu',1.87],['Ven',3.02],['Sam',3.46],['Lun',2.38],['Mar',2.85]];
+  return `
+  <div class="head"><div><h1>Tableau de bord</h1><p class="sub">Journée du mardi 29 septembre 2026, boutique de l’usine</p></div>
+  <a class="btn primary" href="#caisse" style="text-decoration:none">Nouvelle vente</a></div>
+  <div class="kpis">
+    <div class="panel kpi"><div class="label">Ventes du jour</div><div class="v">2 845 600<small>FCFA</small></div><div class="d"><span class="up">+19 %</span> vs lundi · 23 factures</div></div>
+    <div class="panel kpi"><div class="label">Marge brute du jour</div><div class="v">21,4<small>%</small></div><div class="d">609 000 FCFA sur coût de revient réel</div></div>
+    <div class="panel kpi"><div class="label">Encaissé aujourd’hui</div><div class="v">2 310 000<small>FCFA</small></div><div class="d">Espèces 58 % · Mobile money 42 %</div></div>
+    <div class="panel kpi"><div class="label">Créances clients</div><div class="v">6 320 000<small>FCFA</small></div><div class="d"><span class="down">1 020 000</span> en retard de +30 j</div></div>
+  </div>
+  <div class="cols">
+    <div class="grid">
+      <section class="panel"><div class="panel-h"><h2>Ventes des 6 derniers jours ouvrés</h2><span class="label">millions FCFA</span></div>${barChart(days)}</section>
+      <section class="panel"><div class="panel-h"><h2>Bobines entamées</h2><a href="#bobines" class="label" style="color:var(--accent)">Tout voir</a></div>
+        ${coils.filter(c=>c.status==='En cours').map(c=>{const pct=c.kgLeft/c.kg0*100;const m=lengthOf(c.kgLeft,c.w,c.e);return `
+        <div class="coil"><div><b class="mono">${c.id}</b> · ${c.mat} ${dec(c.e,2)} ${c.color!=='Brut'?c.color.toLowerCase():''}</div><div class="meta">${fmt(c.kgLeft)} kg · ≈ ${fmt(m)} m restants</div>
+        <div class="bar"><i class="${pct<15?'low':''}" style="width:${pct}%"></i></div></div>`}).join('')}
+      </section>
+    </div>
+    <div class="grid">
+      <section class="panel"><div class="panel-h"><h2>Alertes</h2><span class="pill crit">4</span></div>
+        <ul class="alerts">
+          <li><span class="sev crit"></span><div><b>Bobine B-2408-009 presque finie</b><p>410 kg restants (≈ 106 m). Le bac rouge brique sera épuisé dans 2 jours au rythme actuel.</p></div></li>
+          <li><span class="sev crit"></span><div><b>Ets Kodjo BTP proche du plafond</b><p>2 940 000 FCFA dus sur un plafond de 3 000 000. Les prochaines ventes à crédit seront bloquées.</p></div></li>
+          <li><span class="sev warn"></span><div><b>Perte anormale sur OF-2026-0139</b><p>Rendement 93,1 % contre 97 % attendu sur la profileuse 2. À vérifier avec le chef d’atelier.</p></div></li>
+          <li><span class="sev info"></span><div><b>Réception à peser</b><p>Commande CF-2026-0088 (2 bobines aluzinc) arrivée ce matin, pesée non saisie.</p></div></li>
+        </ul>
+      </section>
+      <section class="panel"><div class="panel-h"><h2>Meilleures ventes du mois</h2></div>
+        <div class="scroll"><table><thead><tr><th>Article</th><th class="num">Quantité</th><th class="num">Marge</th></tr></thead><tbody>
+          <tr><td>Bac 0,35 bleu</td><td class="num">3 420 ml</td><td class="num">23 %</td></tr>
+          <tr><td>Ondulée 0,30 galva</td><td class="num">5 180 ml</td><td class="num">18 %</td></tr>
+          <tr><td>Pointes à tôle 80 mm</td><td class="num">1 240 kg</td><td class="num">31 %</td></tr>
+          <tr><td>Faîtière 0,35 bleu</td><td class="num">412 pièces</td><td class="num">27 %</td></tr>
+        </tbody></table></div>
+      </section>
+    </div>
+  </div>`;
+},
+caisse(){
+  const fams = ['Tout', ...new Set(products.map(p=>p.fam))];
+  const list = products.filter(p=>(famFilter==='Tout'||p.fam===famFilter) && p.name.toLowerCase().includes(query.toLowerCase()));
+  return `
+  <div class="head"><div><h1>Caisse</h1><p class="sub">Vente comptoir. Touchez un article pour l’ajouter au ticket.</p></div></div>
+  <div class="pos">
+    <section>
+      <div class="search"><input id="q" type="search" placeholder="Rechercher un article, un code…" value="${esc(query)}" aria-label="Rechercher un article"></div>
+      <div class="chips">${fams.map(f=>`<button class="chip" data-fam="${esc(f)}" aria-pressed="${f===famFilter}">${esc(f)}</button>`).join('')}</div>
+      <div class="catalog">${list.map(p=>`
+        <button class="prod" data-add="${p.id}"><span class="swatch" style="background:${p.sw}"></span><b>${esc(p.name)}</b><span class="s">Stock : ${p.stock}</span><span class="p">${fmt(p.price)} FCFA / ${p.unit}</span></button>`).join('') || '<p class="empty">Aucun article ne correspond.</p>'}</div>
+    </section>
+    <section class="panel ticket" id="ticket">${ticketHTML()}</section>
+  </div>`;
+},
+bobines(){
+  const c = coils.find(x=>x.id===selectedCoil);
+  const L0 = lengthOf(c.kg0,c.w,c.e), L = lengthOf(c.kgLeft,c.w,c.e);
+  const usedPct = (1-c.kgLeft/c.kg0)*100;
+  const uses = coilUse[c.id] || [];
+  const stPill = s => s==='En cours'?'info':s==='En stock'?'good':'mute';
+  return `
+  <div class="head"><div><h1>Bobines</h1><p class="sub">Stock de matière première, suivi bobine par bobine</p></div><button class="btn primary" data-toast="Formulaire de réception : à venir dans la phase 1">Réceptionner une bobine</button></div>
+  <div class="coils">
+    <section class="panel"><div class="scroll"><table>
+      <thead><tr><th>N° bobine</th><th>Matière</th><th class="num">Restant</th><th>Statut</th></tr></thead>
+      <tbody>${coils.map(x=>{const low=x.kgLeft>0&&x.kgLeft/x.kg0<.15;return `<tr class="click ${x.id===c.id?'sel':''}" data-coil="${x.id}" tabindex="0">
+        <td class="mono">${x.id}</td><td>${x.mat} ${dec(x.e,2)} mm<br><span class="label" style="text-transform:none;letter-spacing:0;font-weight:400">${x.color}${x.ral?' · '+x.ral:''}</span></td>
+        <td class="num">${fmt(x.kgLeft)} kg<br><span style="color:var(--muted);font-size:12.5px">≈ ${fmt(lengthOf(x.kgLeft,x.w,x.e))} m</span></td>
+        <td><span class="pill ${low?'warn':stPill(x.status)}">${low?'Presque finie':x.status}</span></td></tr>`}).join('')}</tbody>
+    </table></div></section>
+    <section class="panel">
+      <div class="panel-h"><div><div class="label">Fiche bobine</div><h2 class="mono" style="font-family:var(--mono);font-size:18px">${c.id}</h2></div><span class="pill ${stPill(c.status)}">${c.status}</span></div>
+      <dl class="dl">
+        <div><dt>Matière</dt><dd>${c.mat}${c.color!=='Brut'?' · '+c.color:''}${c.ral?' ('+c.ral+')':''}</dd></div>
+        <div><dt>Format</dt><dd>${dec(c.e,2)} mm × ${fmt(c.w*1000)} mm</dd></div>
+        <div><dt>Fournisseur</dt><dd>${c.supplier}</dd></div>
+        <div><dt>Réception</dt><dd>${c.recv}</dd></div>
+        <div><dt>Prix d’achat</dt><dd>${fmt(c.priceKg)} FCFA/kg · ${fcfa(c.priceKg*c.kg0)}</dd></div>
+        <div><dt>Emplacement</dt><dd>${c.loc}</dd></div>
+      </dl>
+      <div class="gauge"><div class="label">Consommation</div>
+        <div class="track"><span class="used" style="width:${usedPct}%"></span><span class="left" style="width:${100-usedPct}%"></span></div>
+        <div class="legend"><span>Utilisé : ${fmt(c.kg0-c.kgLeft)} kg</span><span><b style="color:var(--fg)">Restant : ${fmt(c.kgLeft)} kg ≈ ${fmt(L)} m</b></span></div>
+      </div>
+      <div class="formula" aria-label="Calcul de la longueur">L = ${fmt(c.kgLeft)} kg ÷ (7,85 × ${dec(c.w,2)} m × ${dec(c.e,2)} mm) = ${dec(L,1)} m &nbsp;·&nbsp; neuve : ${dec(L0,1)} m</div>
+      <div class="split" style="margin:16px 0 8px">
+        <div class="stat"><div class="label">Rendement réel</div><div class="v">${c.yieldPct?dec(c.yieldPct,1)+' %':'—'}</div><div class="d">Objectif 97 %</div></div>
+        <div class="stat"><div class="label">Coût matière</div><div class="v">${fmt(c.priceKg*c.w*c.e*DENS)}</div><div class="d">FCFA par mètre</div></div>
+        <div class="stat"><div class="label">Épuisement</div><div class="v">${c.kgLeft===0?'—':c.kgLeft<600?'2 j':'9 j'}</div><div class="d">au rythme actuel</div></div>
+      </div>
+      <div class="label" style="margin:12px 0 4px">Historique des consommations</div>
+      ${uses.length?`<div class="scroll"><table><thead><tr><th>Date</th><th>Ordre</th><th class="num">Poids</th><th class="num">Produit</th></tr></thead><tbody>
+        ${uses.map(u=>`<tr><td>${u.d}</td><td class="mono"><a href="#production" style="color:var(--accent)">${u.of}</a></td><td class="num">${fmt(u.kg)} kg</td><td class="num">${fmt(u.m)} m</td></tr>`).join('')}
+      </tbody></table></div>`:'<p class="empty">Historique affiché sur la bobine B-2409-017 dans cette maquette.</p>'}
+    </section>
+  </div>`;
+},
+production(){
+  const c = coils[0];
+  const lines=[{p:'Bac acier 0,35 galva — longueur client',q:40,l:4.20,cl:'Ets Kodjo BTP'},{p:'Bac acier 0,35 galva — longueur standard',q:60,l:3.00,cl:'Stock'}];
+  const produced = lines.reduce((s,x)=>s+x.q*x.l,0);
+  const kgUsed = 1190, theo = lengthOf(kgUsed,c.w,c.e);
+  const scrapM = theo-produced, scrapKg = scrapM*DENS*c.w*c.e;
+  const yieldPct = produced/theo*100;
+  const matCost = kgUsed*c.priceKg, cons=12000, mach=45000, total=matCost+cons+mach;
+  return `
+  <div class="head"><div><h1>Ordre de fabrication <span class="mono" style="font-size:.6em;color:var(--muted)">OF-2026-0142</span></h1><p class="sub">Profileuse 1 · lancé le 28/09/2026 à 7 h 40</p></div><span class="pill good">Terminé</span></div>
+  <section class="panel" style="margin-bottom:16px">
+    <div class="steps">
+      <div class="step done"><b>Planifié</b>27/09 · 16 h 10</div>
+      <div class="step done"><b>Bobine chargée</b>28/09 · 7 h 40</div>
+      <div class="step done"><b>Production</b>28/09 · 7 h 55</div>
+      <div class="step done"><b>Pesée des chutes</b>28/09 · 11 h 20</div>
+      <div class="step done now"><b>Clôturé</b>28/09 · 11 h 35</div>
+    </div>
+    <div class="split">
+      <div class="stat"><div class="label">Produit</div><div class="v">${dec(produced,1)} m</div><div class="d">100 feuilles vendables</div></div>
+      <div class="stat"><div class="label">Rendement</div><div class="v" style="color:${yieldPct>=97?'var(--good)':'var(--warn)'}">${dec(yieldPct,1)} %</div><div class="d">${dec(theo,1)} m théoriques pour ${fmt(kgUsed)} kg</div></div>
+      <div class="stat"><div class="label">Chutes</div><div class="v">${dec(scrapKg,1)} kg</div><div class="d">${dec(scrapM,1)} m · versées en sous-produits</div></div>
+    </div>
+  </section>
+  <div class="cols">
+    <section class="panel"><div class="panel-h"><h2>Lignes produites</h2></div>
+      <div class="scroll"><table><thead><tr><th>Article</th><th>Destination</th><th class="num">Feuilles</th><th class="num">Longueur</th><th class="num">Total</th></tr></thead><tbody>
+      ${lines.map(x=>`<tr><td>${x.p}</td><td>${x.cl==='Stock'?'<span class="pill mute">Stock</span>':'<span class="pill info">'+x.cl+'</span>'}</td><td class="num">${x.q}</td><td class="num">${dec(x.l,2)} m</td><td class="num">${dec(x.q*x.l,1)} m</td></tr>`).join('')}
+      </tbody></table></div>
+    </section>
+    <div class="grid">
+      <section class="panel"><div class="panel-h"><h2>Matière consommée</h2></div>
+        <dl class="dl"><div><dt>Bobine</dt><dd class="mono"><a href="#bobines" style="color:var(--accent)">${c.id}</a></dd></div><div><dt>Format</dt><dd>${c.mat} ${dec(c.e,2)} × ${fmt(c.w*1000)}</dd></div>
+        <div><dt>Poids avant</dt><dd>${fmt(c.kgLeft+kgUsed)} kg</dd></div><div><dt>Poids après</dt><dd>${fmt(c.kgLeft)} kg</dd></div></dl>
+      </section>
+      <section class="panel"><div class="panel-h"><h2>Coût de revient</h2></div>
+        <table><tbody>
+          <tr><td>Matière (${fmt(kgUsed)} kg × ${fmt(c.priceKg)})</td><td class="num">${fcfa(matCost)}</td></tr>
+          <tr><td>Consommables (film, feuillard)</td><td class="num">${fcfa(cons)}</td></tr>
+          <tr><td>Frais machine et main-d’œuvre</td><td class="num">${fcfa(mach)}</td></tr>
+          <tr><td><b>Coût par mètre produit</b></td><td class="num"><b>${fcfa(total/produced)}</b></td></tr>
+        </tbody></table>
+      </section>
+    </div>
+  </div>`;
+}
+};
+
+function barChart(days){
+  const W=560,H=190,pl=36,pb=26,pt=10,max=4,bw=(W-pl-16)/days.length;
+  const y=v=>pt+(H-pt-pb)*(1-v/max);
+  let s=`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Ventes des 6 derniers jours ouvrés, de 1,87 à 3,46 millions FCFA">`;
+  for(let t=0;t<=max;t++){s+=`<line x1="${pl}" x2="${W-8}" y1="${y(t)}" y2="${y(t)}" stroke="var(--line)"/><text x="${pl-8}" y="${y(t)+4}" text-anchor="end" font-size="11" fill="var(--muted)">${t}</text>`}
+  days.forEach(([d,v],i)=>{const x=pl+8+i*bw, last=i===days.length-1;
+    s+=`<rect x="${x}" y="${y(v)}" width="${bw-18}" height="${y(0)-y(v)}" rx="3" fill="${last?'var(--accent)':'var(--faint)'}" opacity="${last?1:.55}"/>`;
+    s+=`<text x="${x+(bw-18)/2}" y="${H-8}" text-anchor="middle" font-size="11.5" fill="${last?'var(--fg)':'var(--muted)'}" font-weight="${last?600:400}">${d}</text>`;
+    s+=`<text x="${x+(bw-18)/2}" y="${y(v)-6}" text-anchor="middle" font-size="11" fill="${last?'var(--fg)':'var(--muted)'}" font-weight="${last?600:400}">${dec(v,2)}</text>`;
+  });
+  return s+'</svg>';
+}
+
+function lineTotal(l){const p=products.find(x=>x.id===l.pid);return p.cut? l.qty*l.len*p.price : l.qty*p.price}
+function ticketHTML(){
+  const cl = clients.find(c=>c.id===clientId);
+  const sub = cart.reduce((s,l)=>s+lineTotal(l),0);
+  const disc = Math.round(sub*cl.disc/100);
+  const total = sub-disc;
+  if(!cl.credit && payMode==='Crédit') payMode='Espèces';
+  return `<div class="panel-h"><h2>Ticket en cours</h2><span class="label">FA-2026-0${invoiceNo}</span></div>
+  <div class="field"><label class="label" for="client">Client</label><select id="client">${clients.map(c=>`<option value="${c.id}" ${c.id===clientId?'selected':''}>${esc(c.name)}${c.disc?' · remise pro '+c.disc+' %':''}</option>`).join('')}</select>${cl.note?`<span style="font-size:12.5px;color:var(--muted)">${cl.note}</span>`:''}</div>
+  <div>${cart.length?cart.map((l,i)=>{const p=products.find(x=>x.id===l.pid);return `
+    <div class="line"><div><b style="font-weight:600">${esc(p.name)}</b></div><div class="mono">${fmt(lineTotal(l))}</div>
+    <div class="ctl">${p.cut?`<input id="q${i}" type="number" min="1" step="1" value="${l.qty}" data-i="${i}" data-k="qty" aria-label="Nombre de feuilles"> feuilles de <input id="l${i}" type="number" min="0.5" step="0.05" value="${l.len.toFixed(2)}" data-i="${i}" data-k="len" aria-label="Longueur en mètres"> m <span>= ${dec(l.qty*l.len,2)} ml × ${fmt(p.price)}</span>`
+      :`<input id="q${i}" type="number" min="1" step="1" value="${l.qty}" data-i="${i}" data-k="qty" aria-label="Quantité"> ${p.unit}${l.qty>1&&p.unit!=='kg'?'s':''} × ${fmt(p.price)}`}
+      <button class="x" data-del="${i}" aria-label="Retirer la ligne" style="margin-left:auto">×</button></div></div>`}).join('')
+    :'<p class="empty">Le ticket est vide. Ajoutez des articles depuis le catalogue.</p>'}</div>
+  <div class="tot"><span>Sous-total</span><span class="mono">${fmt(sub)}</span>
+    ${disc?`<span>Remise pro ${cl.disc} %</span><span class="mono">−${fmt(disc)}</span>`:''}
+    <span class="big">Total</span><span class="big">${fmt(total)} <small style="font:500 13px var(--body);color:var(--muted)">FCFA</small></span></div>
+  <div class="label" style="margin-top:14px">Paiement</div>
+  <div class="pay">${['Espèces','Mobile money','Virement','Chèque','Crédit'].map(m=>`<button data-pay="${m}" aria-pressed="${m===payMode}" ${m==='Crédit'&&!cl.credit?'disabled':''}>${m}</button>`).join('')}</div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-toast="Devis DV-2026-0412 prêt à envoyer par WhatsApp" ${cart.length?'':'disabled'}>Faire un devis</button><button class="btn primary" id="checkout" style="flex:1" ${cart.length?'':'disabled'}>Encaisser ${fmt(total)} FCFA</button></div>`;
+}
+
+/* ---------- Rendu et interactions ---------- */
+const main = document.getElementById('main');
+function current(){const h=location.hash.replace('#','');return views[h]?h:'tableau'}
+function render(){
+  const v=current();
+  main.innerHTML = `<div class="demo"><span>Maquette</span>Données fictives d’Aciéra Tôles, pour valider les écrans avant le développement.</div>` + views[v]();
+  document.querySelectorAll('.nav a').forEach(a=>a.setAttribute('aria-current', a.dataset.view===v?'page':'false'));
+}
+function refreshTicket(){const t=document.getElementById('ticket'); if(t) t.innerHTML=ticketHTML();}
+let toastTimer;
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.hidden=true,2600)}
+
+window.addEventListener('hashchange',()=>{render();window.scrollTo(0,0)});
+main.addEventListener('click',e=>{
+  const el=e.target.closest('[data-add],[data-del],[data-fam],[data-pay],[data-coil],[data-toast],#checkout');
+  if(!el) return;
+  if(el.dataset.add){const p=products.find(x=>x.id===el.dataset.add);const ex=cart.find(l=>l.pid===p.id&&!p.cut);ex?ex.qty++:cart.push(p.cut?{pid:p.id,qty:1,len:3}:{pid:p.id,qty:1});refreshTicket();toast(p.name+' ajouté')}
+  else if(el.dataset.del){cart.splice(+el.dataset.del,1);refreshTicket()}
+  else if(el.dataset.fam){famFilter=el.dataset.fam;render()}
+  else if(el.dataset.pay){payMode=el.dataset.pay;refreshTicket()}
+  else if(el.dataset.coil){selectedCoil=el.dataset.coil;render()}
+  else if(el.dataset.toast){toast(el.dataset.toast)}
+  else if(el.id==='checkout'){toast(`Vente FA-2026-0${invoiceNo} enregistrée · ${payMode}`);invoiceNo++;cart=[];refreshTicket()}
+});
+main.addEventListener('keydown',e=>{const r=e.target.closest('[data-coil]');if(r&&(e.key==='Enter'||e.key===' ')){e.preventDefault();selectedCoil=r.dataset.coil;render()}});
+main.addEventListener('change',e=>{
+  if(e.target.id==='client'){clientId=e.target.value;refreshTicket()}
+  else if(e.target.dataset.i!==undefined){const l=cart[+e.target.dataset.i];const v=parseFloat(e.target.value);if(v>0){l[e.target.dataset.k]=v}refreshTicket()}
+});
+main.addEventListener('input',e=>{if(e.target.id==='q'){query=e.target.value;const pos=e.target.selectionStart;render();const q=document.getElementById('q');q.focus();q.setSelectionRange(pos,pos)}});
+render();
+</script>
